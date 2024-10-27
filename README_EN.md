@@ -38,3 +38,7 @@ First, make sure you have [Node.js](https://nodejs.org) installed.
 
 - **Upload Files**: Upload files from your Windows device.
 - **Download Files**: Access the server on iPad or other devices via the LAN and download files.
+
+### Example
+
+![example1](./imgs/example1.jpg)
