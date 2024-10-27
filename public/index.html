@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #file-list {
+      margin-top: 20px;
+    }
+    a {
+      display: block;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>局域网文件管理</h1>
+  <h2>上传文件</h2>
+  <form id="upload-form" enctype="multipart/form-data">
+    <input type="file" name="file" id="file-input" />
+    <button type="submit">上传</button>
+  </form>
+
+  <h2>下载文件</h2>
+  <div id="file-list"></div>
+
+  <script>
+    document.getElementById('upload-form').onsubmit = async function (e) {
+      e.preventDefault();
+      const formData = new FormData();
+      const fileInput = document.getElementById('file-input');
+      formData.append('file', fileInput.files[0]);
+
+      const response = await fetch('/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        alert('上传成功');
+        loadFileList();
+      } else {
+        alert('上传失败');
+      }
+    };
+
+    async function loadFileList() {
+      const response = await fetch('/file-list');
+      const files = await response.json();
+      const fileList = document.getElementById('file-list');
+      fileList.innerHTML = '';
+      files.forEach(file => {
+        const a = document.createElement('a');
+        a.href = `/uploads/${file}`;
+        a.textContent = file;
+        fileList.appendChild(a);
+      });
+    }
+
+    loadFileList();
+  </script>
+</body>
+</html>
